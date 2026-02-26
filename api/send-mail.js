@@ -21,6 +21,14 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false, message: 'Name, email, and phone are required.' });
   }
 
+  if (!process.env.EMAIL_PASS || !process.env.EMAIL_USER) {
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Server Configuration Error', 
+      error: 'Vercel Environment Variables missing. Please check Vercel Dashboard -> Settings -> Environment Variables. Redeploy required.'
+    });
+  }
+
   try {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
