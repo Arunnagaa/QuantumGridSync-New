@@ -25,11 +25,16 @@ app.get('/', (req, res) => {
 // Configure NodeMailer Transport
 // Note: If using Gmail, you MUST use an App Password, not your regular password.
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // You can change this to your email provider (e.g., 'outlook', 'yahoo')
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // Use STARTTLS
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
-  }
+  },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 15000
 });
 
 app.post('/send-mail', async (req, res) => {
