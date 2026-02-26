@@ -7,9 +7,18 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://quantum-grid-sync-new.vercel.app', 'http://localhost:5500', 'http://127.0.0.1:5500'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.send('QuantumGridSync Mailer Backend is Running!');
+});
 
 // Configure NodeMailer Transport
 // Note: If using Gmail, you MUST use an App Password, not your regular password.
@@ -89,16 +98,18 @@ app.post('/send-mail', async (req, res) => {
       `
     };
 
-    // Send both emails
-    await transporter.sendMail(adminMailOptions);
-    await transporter.sendMail(customerMailOptions);
+    // Send both emails using Promise.all to run them concurrently
+    await Promise.all([
+      transporter.sendMail(adminMailOptions),
+      transporter.sendMail(customerMailOptions)
+    ]);
 
     console.log(`[SUCCESS] Emails sent for lead: ${name}`);
     res.status(200).json({ success: true, message: 'Emails sent successfully' });
 
   } catch (error) {
-    console.error('[ERROR] Failed to send email:', error);
-    res.status(500).json({ success: false, message: 'Server error: Could not send email' });
+    console.error('[ERROR] Failed to send email:', error.message || error);
+    res.status(500).json({ success: false, message: 'Server error: Could not send email', error: error.message });
   }
 });
 
