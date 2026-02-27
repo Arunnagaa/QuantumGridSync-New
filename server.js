@@ -10,7 +10,13 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: ['https://quantum-grid-sync-new.vercel.app', 'http://localhost:5500', 'http://127.0.0.1:5500'],
+  origin: [
+    'https://quantum-grid-sync-new.vercel.app',
+    'https://www.quantumgridsync.com',
+    'https://quantumgridsync.com',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500'
+  ],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Accept']
 }));
