@@ -2561,68 +2561,74 @@
       { threshold: 0.08 }
     );
     document.querySelectorAll('.rv').forEach(el => io.observe(el));
-  });
+  </script>
+
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      // Initialize EmailJS with Public Key
+      emailjs.init("Ps2JAzp3_6j_mmY-0");
+    })();
   </script>
 
   <script>
-    // ─── Backend API Contact Form ──────────────────────────────────────
-    // IMPORTANT: Replace this URL with your deployed backend URL on Render/Railway
-    const BACKEND_URL = 'https://quantum-backend.onrender.com';
+  // ─── EmailJS Contact Form Setup ──────────────────────────────────────
+  async function sendMessage() {
+    const name = document.getElementById('cf_name').value.trim();
+    const email = document.getElementById('cf_email').value.trim();
+    const phone = document.getElementById('cf_phone').value.trim();
+    const service = document.getElementById('cf_service').value || 'Not specified';
+    const message = document.getElementById('cf_message').value.trim() || 'No details provided';
+    const btn = document.getElementById('sendBtn');
 
-    async function sendMessage() {
-      const name = document.getElementById('cf_name').value.trim();
-      const email = document.getElementById('cf_email').value.trim();
-      const phone = document.getElementById('cf_phone').value.trim();
-      const service = document.getElementById('cf_service').value || 'Not specified';
-      const message = document.getElementById('cf_message').value.trim() || 'No details provided';
-      const btn = document.getElementById('sendBtn');
-
-      if (!name || !email || !phone) {
-        showStatus('⚠️ Please fill in Name, Email and Phone number.', '#fff3cd', '#856404');
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
-
-      try {
-        const response = await fetch(`${BACKEND_URL}/send-mail`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ name, email, phone, service, message })
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-          showStatus('✅ Message sent successfully! We will contact you shortly.', '#d4edda', '#155724');
-          document.getElementById('cf_name').value = '';
-          document.getElementById('cf_email').value = '';
-          document.getElementById('cf_phone').value = '';
-          document.getElementById('cf_service').value = '';
-          document.getElementById('cf_message').value = '';
-        } else {
-          showStatus('❌ Sending failed. Please try again or call us at +91 98404 41399', '#f8d7da', '#721c24');
-        }
-      } catch (err) {
-        showStatus('❌ Sending failed. Please try again or call us at +91 98404 41399', '#f8d7da', '#721c24');
-        console.error('Mail Error:', err);
-      }
-
-      btn.disabled = false;
-      btn.textContent = 'Send Message →';
+    if (!name || !email || !phone) {
+      showStatus('⚠️ Please fill in Name, Email and Phone number.', '#fff3cd', '#856404');
+      return;
     }
 
-    function showStatus(msg, bg, color) {
-      const el = document.getElementById('formStatus');
-      el.style.display = 'block';
-      el.style.background = bg;
-      el.style.color = color;
-      el.style.border = '1.5px solid ' + color + '66';
-      el.textContent = msg;
-      setTimeout(function () { el.style.display = 'none'; }, 7000);
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const templateParams = {
+      name: name,
+      email: email,
+      phone: phone,
+      service: service,
+      message: message,
+    };
+
+    try {
+      // service_oo8qsev | template_3nxex2p
+      const response = await emailjs.send('service_oo8qsev', 'template_3nxex2p', templateParams);
+
+      if (response.status === 200) {
+        showStatus('✅ Message sent successfully! We will contact you shortly.', '#d4edda', '#155724');
+        document.getElementById('cf_name').value = '';
+        document.getElementById('cf_email').value = '';
+        document.getElementById('cf_phone').value = '';
+        document.getElementById('cf_service').value = '';
+        document.getElementById('cf_message').value = '';
+      }
+    } catch (err) {
+      showStatus('❌ Sending failed. Please try again or call us at +91 98404 41399', '#f8d7da', '#721c24');
+      console.error('EmailJS Error:', err);
     }
-  </script>
+
+    btn.disabled = false;
+    btn.textContent = 'Send Message →';
+  }
+
+  function showStatus(msg, bg, color) {
+    const el = document.getElementById('formStatus');
+    el.style.display = 'block';
+    el.style.background = bg;
+    el.style.color = color;
+    el.style.border = '1.5px solid ' + color + '66';
+    el.textContent = msg;
+    setTimeout(function () { el.style.display = 'none'; }, 7000);
+  }
+</script>
   <!-- FLOATING WHATSAPP BUTTON -->
   <a href="https://wa.me/919840441399" target="_blank" class="wa-float" title="Chat on WhatsApp">
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
