@@ -2420,7 +2420,7 @@
               <div class="cdet-ico">📧</div>
               <div>
                 <div class="cdet-lbl">EMAIL</div>
-                <div class="cdet-val"><a href="/cdn-cgi/l/email-protection#deafabbfb0aaabb3b9acb7baada7b0bd9eb9b3bfb7b2f0bdb1b3"><span class="__cf_email__" data-cfemail="f8898d99968c8d959f8a919c8b81969bb89f95999194d69b9795">[email&#160;protected]</span></a></div>
+                <div class="cdet-val"><a href="mailto:Quantumgridsync@gmail.com">Quantumgridsync@gmail.com</a></div>
               </div>
             </div>
             <div class="cdet">
@@ -2533,7 +2533,7 @@
       <div class="fcol">
         <h5>Contact</h5>
         <ul>
-          <li><a href="/cdn-cgi/l/email-protection#f9888c98978d8c949e8b909d8a80979ab99e94989095d79a9694"><span class="__cf_email__" data-cfemail="473632262933322a20352e23343e292407202a262e2b6924282a">[email&#160;protected]</span></a></li>
+          <li><a href="mailto:Quantumgridsync@gmail.com">Quantumgridsync@gmail.com</a></li>
           <li><a href="https://wa.me/919840441399" target="_blank">+91 98404 41399 💬 WhatsApp</a></li>
           <li><a href="#">Chennai, Tamil Nadu, India</a></li>
         </ul>
@@ -2563,17 +2563,8 @@
     document.querySelectorAll('.rv').forEach(el => io.observe(el));
   </script>
 
-  <!-- EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function() {
-      // Initialize EmailJS with Public Key
-      emailjs.init("Ps2JAzp3_6j_mmY-0");
-    })();
-  </script>
-
   <script>
-  // ─── EmailJS Contact Form Setup ──────────────────────────────────────
+  // ─── Contact Form ──────────────────────────────────────
   async function sendMessage() {
     const name = document.getElementById('cf_name').value.trim();
     const email = document.getElementById('cf_email').value.trim();
@@ -2590,29 +2581,29 @@
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
-    const templateParams = {
-      name: name,
-      email: email,
-      phone: phone,
-      service: service,
-      message: message,
-    };
-
     try {
-      // service_oo8qsev | template_3nxex2p
-      const response = await emailjs.send('service_oo8qsev', 'template_3nxex2p', templateParams);
+      const response = await fetch('/api/send-mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, service, message })
+      });
 
-      if (response.status === 200) {
+      const data = await response.json();
+
+      if (response.ok && data.success) {
         showStatus('✅ Message sent successfully! We will contact you shortly.', '#d4edda', '#155724');
         document.getElementById('cf_name').value = '';
         document.getElementById('cf_email').value = '';
         document.getElementById('cf_phone').value = '';
         document.getElementById('cf_service').value = '';
         document.getElementById('cf_message').value = '';
+      } else {
+        showStatus('❌ Sending failed. Please try again or call us at +91 98404 41399', '#f8d7da', '#721c24');
+        console.error('Server error:', data);
       }
     } catch (err) {
       showStatus('❌ Sending failed. Please try again or call us at +91 98404 41399', '#f8d7da', '#721c24');
-      console.error('EmailJS Error:', err);
+      console.error('Fetch error:', err);
     }
 
     btn.disabled = false;
