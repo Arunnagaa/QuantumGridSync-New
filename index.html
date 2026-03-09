@@ -263,6 +263,71 @@
       color: #fff;
     }
 
+    /* HAMBURGER BUTTON */
+    .ham {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 400;
+      border-radius: 8px;
+    }
+    .ham span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--navy);
+      border-radius: 2px;
+      transition: all .3s ease;
+    }
+    .ham.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .ham.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .ham.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* MOBILE MENU OVERLAY */
+    .mob-menu {
+      display: none;
+      position: fixed;
+      top: 68px;
+      left: 0;
+      right: 0;
+      z-index: 299;
+      background: rgba(245,240,232,.98);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 5% 20px;
+      flex-direction: column;
+      box-shadow: 0 8px 24px rgba(26,26,46,.1);
+    }
+    .mob-menu.open { display: flex; }
+    .mob-menu a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+    .mob-menu a:last-child { border-bottom: none; }
+    .mob-menu a:hover { color: var(--gold); }
+    .mob-menu .mob-cta {
+      margin-top: 12px;
+      background: var(--navy);
+      color: #fff !important;
+      border-radius: 50px;
+      padding: 14px 24px;
+      text-align: center;
+      font-weight: 600;
+      border-bottom: none;
+    }
+    .mob-menu .mob-cta:hover { background: var(--gold); }
+
     /* HERO */
     .hero {
       position: relative;
@@ -1940,66 +2005,48 @@
     }
 
     @media(max-width:768px) {
-      .navl {
-        display: none;
-      }
+      /* NAV */
+      .navl { display: none; }
+      .ncta { display: none; }
+      .ham { display: flex; }
 
-      .svgrid {
-        grid-template-columns: 1fr;
-      }
+      /* HERO */
+      .hr { display: none; }
+      .hero { padding-top: 90px; padding-bottom: 40px; }
+      .tagline .tl { font-size: 2.8rem; }
+      .hbtns { flex-wrap: wrap; gap: 12px; }
+      .hbtns a { width: 100%; text-align: center; }
 
-      .sbinner {
-        flex-direction: column;
-      }
+      /* SECTIONS */
+      .pad { padding: 56px 0; }
 
-      .sc {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
+      /* SERVICES */
+      .svgrid { grid-template-columns: 1fr; }
 
-      .sc:last-child {
-        border-bottom: none;
-      }
+      /* STATS */
+      .sbinner { flex-direction: column; }
+      .sc { border-right: none; border-bottom: 1px solid var(--border); }
+      .sc:last-child { border-bottom: none; }
 
-      .techgrid {
-        grid-template-columns: 1fr;
-      }
+      /* TECH */
+      .techgrid { grid-template-columns: 1fr; }
 
-      .testigrid {
-        grid-template-columns: 1fr;
-      }
+      /* TESTIMONIALS */
+      .testigrid { grid-template-columns: 1fr; }
 
-      .fgrid {
-        grid-template-columns: 1fr;
-        gap: 28px;
-      }
+      /* FOOTER */
+      .fgrid { grid-template-columns: 1fr; gap: 28px; }
 
-      .timeline {
-        flex-direction: column;
-        gap: 32px;
-      }
+      /* PROCESS TIMELINE */
+      .timeline { flex-direction: column; gap: 32px; }
+      .timeline::before { display: none; }
+      .tstep { flex-direction: row; text-align: left; gap: 16px; }
+      .tico { width: 56px; height: 56px; font-size: 1.4rem; flex-shrink: 0; margin-bottom: 0; }
+      .tdesc { max-width: 100%; }
 
-      .timeline::before {
-        display: none;
-      }
-
-      .tstep {
-        flex-direction: row;
-        text-align: left;
-        gap: 16px;
-      }
-
-      .tico {
-        width: 56px;
-        height: 56px;
-        font-size: 1.4rem;
-        flex-shrink: 0;
-        margin-bottom: 0;
-      }
-
-      .tdesc {
-        max-width: 100%;
-      }
+      /* SECTION HEADINGS */
+      .sh { font-size: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -2020,7 +2067,19 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <a href="#contact" class="ncta"><em>Start</em> a Project</a>
+    <button class="ham" id="ham" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="mob-menu" id="mobMenu">
+    <a href="#" onclick="closeMobileMenu()">Home</a>
+    <a href="#services" onclick="closeMobileMenu()">Services</a>
+    <a href="#process" onclick="closeMobileMenu()">Process</a>
+    <a href="#tech" onclick="closeMobileMenu()">Tech Stack</a>
+    <a href="#why" onclick="closeMobileMenu()">Why Us</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+    <a href="#contact" class="mob-cta" onclick="closeMobileMenu()">🚀 Start a Project</a>
+  </div>
 
   <section class="hero">
     <div class="hero-left-anim">
@@ -2561,6 +2620,29 @@
       { threshold: 0.08 }
     );
     document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('mobMenu');
+      const ham = document.getElementById('ham');
+      if (menu && ham && !menu.contains(e.target) && !ham.contains(e.target)) {
+        menu.classList.remove('open');
+        ham.classList.remove('open');
+      }
+    });
+  </script>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobMenu');
+      const ham = document.getElementById('ham');
+      menu.classList.toggle('open');
+      ham.classList.toggle('open');
+    }
+    function closeMobileMenu() {
+      document.getElementById('mobMenu').classList.remove('open');
+      document.getElementById('ham').classList.remove('open');
+    }
   </script>
 
   <script>
