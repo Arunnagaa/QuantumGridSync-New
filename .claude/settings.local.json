@@ -4,7 +4,22 @@
       "Bash(git init)",
       "Bash(git add .)",
       "Bash(git commit:*)",
-      "Bash(git add .claude/settings.local.json)"
+      "Bash(git add .claude/settings.local.json)",
+      "Bash(gh auth status)",
+      "Bash(git config --global user.name)",
+      "Bash(git config --global user.email)",
+      "Bash(git credential-manager version)",
+      "Bash(git credential-osxkeychain version)",
+      "Bash(git config --global credential.helper)",
+      "Bash(git remote add origin https://github.com/Arunnagaa/QuantumGridSync-New.git)",
+      "Bash(git branch -M main)",
+      "Bash(git push -u origin main)",
+      "Bash(git pull origin main --allow-unrelated-histories)",
+      "Bash(git add api/send-mail.js)",
+      "Bash(git add vercel.json)",
+      "Bash(git push)",
+      "WebFetch(domain:quantum-grid-sync-new.vercel.app)",
+      "Bash(curl -s -X POST https://quantum-grid-sync-new.vercel.app/api/send-mail -H \"Content-Type: application/json\" -d '{\"\"name\"\":\"\"Test User\"\",\"\"email\"\":\"\"test@example.com\"\",\"\"phone\"\":\"\"9876543210\"\",\"\"service\"\":\"\"Web Development\"\",\"\"message\"\":\"\"This is a test message\"\"}')"
     ]
   }
 }
